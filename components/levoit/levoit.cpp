@@ -670,7 +670,7 @@ namespace esphome
                 ESP_LOGI(TAG, "Initialized used_cadr to 0");
             }
             if (pref_total_runtime_.load(&total_runtime_)) {
-                ESP_LOGI(TAG, "Restored total_runtime: %u hours", (unsigned)total_runtime_);
+                ESP_LOGI(TAG, "Restored total_runtime: %u min", (unsigned)total_runtime_);
             } else {
                 total_runtime_ = 0;
                 ESP_LOGI(TAG, "Initialized total_runtime to 0");
