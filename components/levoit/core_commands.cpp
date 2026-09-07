@@ -129,7 +129,7 @@ namespace esphome
                     uint8_t size_high = (raw >> 8) & 0xFF;
 
                     ESP_LOGD(TAG_CORE_CMD, "setAutoModeEfficient: %.0f m² -> raw=%u (0x%02X 0x%02X)",
-                             m2, raw, size_low, size_high);
+                             m2, (unsigned)raw, size_low, size_high);
 
                     payload = {0x02, size_low, size_high};
                 }

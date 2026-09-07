@@ -713,7 +713,8 @@ namespace esphome
                     uint32_t cadr_per_min = cadr_per_hour / 60;
                     used_cadr_ += cadr_per_min;
                     ESP_LOGD(TAG, "CADR tracked: +%u m³ (speed=%d, total=%u m³, runtime=%u min)", 
-                             cadr_per_min, speed, used_cadr_, total_runtime_);
+                             (unsigned)cadr_per_min, speed, (unsigned)used_cadr_,
+                             (unsigned)total_runtime_);
                     
                 }
                 
