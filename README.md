@@ -21,27 +21,33 @@ This started as a handful of custom ESPHome firmware and hardware projects for L
 
 ## Overview of existing / tested esphome-ified Air Purifiers
 
-Every purifier covered here at a glance — how it's converted to ESPHome, its specs, and how involved the teardown is. Click a model or its **Guide** for the full write-up.
+Every purifier that runs ESPHome at a glance — how it's converted, its specs, and how involved the teardown is. Click a model or its **Guide** for the full write-up.
 
-| Model | Manufacturer | Methods | CADR (spec) | Noise | Disassembly | Guide | Links | Comments |
-|-------|--------------|---------|-------------|-------|-------------|-------|-------|----------|
-| [Core 200S](./devices/levoit-core200s) | Levoit | 🟢 Flash / 🔵 Add ESP | 167 m³/h | 24–48 dB | Easy | [Guide](./devices/levoit-core200s) | [Amazon](https://amzn.to/3SGH513) | ✅ Tested · 3 speeds, no air-quality sensor |
-| [Core 300S](./devices/levoit-core300s) | Levoit | 🟢 Flash / 🔵 Add ESP | 214 m³/h | 24–50 dB | Easy | [Guide](./devices/levoit-core300s) | [Amazon](https://amzn.to/4aMVbnO) | ✅ Tested · PM2.5 + Auto mode |
-| [Core 400S](./devices/levoit-core400s) | Levoit | 🟢 Flash / 🔵 Add ESP | 442 m³/h | 24–52 dB | Hard | [Guide](./devices/levoit-core400s) | [Amazon](https://amzn.to/4vOT9vt) | ✅ Tested · 4 speeds |
-| [Core 600S](./devices/levoit-core600s) | Levoit | 🟢 Flash / 🔵 Add ESP | 641 m³/h | 26–54 dB | Hard | [Guide](./devices/levoit-core600s) | [Amazon](https://amzn.to/4opVx9z) | ✅ Tested · 4 auto modes |
-| [Vital 100S](./devices/levoit-vital100s) | Levoit | 🟢 Flash / 🔵 Add ESP | 221 m³/h | 23–52 dB | Easy | [Guide](./devices/levoit-vital100s/README.md#teardown--disassembly) | [Amazon](https://amzn.to/3SaFron) | ✅ Tested · Pet mode; detailed teardown |
-| [Vital 200S (Pro)](./devices/levoit-vital200s) | Levoit | 🟢 Flash / 🔵 Add ESP | 415 m³/h | 23–58 dB | Easy | [Guide](./devices/levoit-vital200s) | [Amazon](https://amzn.to/4xMiJn1) | ✅ Tested |
-| [Everest Air](./devices/levoit-everest-air) | Levoit | 🟢 Flash / 🔵 Add ESP | 612 m³/h | 24–56 dB | Easy | [Guide](./devices/levoit-everest-air) | [Amazon](https://amzn.to/3Q1cMB) | ✅ Tested · vent louver, PM1.0/2.5/10, Turbo |
-| [Sprout](./devices/levoit-sprout) | Levoit | 🟢 Flash / 🔵 Add ESP | 145 m³/h | 22–47 dB | Easy | [Guide](./devices/levoit-sprout) | [Amazon](https://amzn.to/4oAJs1n) | 🚧 WIP · white-noise audio (I2S MP3) |
-| [LV-PUR 131S](./devices/levoit-lv131s/) | Levoit | 🔴 Custom HW | — | — | Medium | [Guide](./devices/levoit-lv131s/) | — | Custom FW + MCU & sensor upgrade |
-| [LV-PUR 131](./devices/levoit-lv131/) | Levoit | 🔴 Custom HW | — | — | Medium | [Guide](./devices/levoit-lv131/) | — | Custom FW + temperature sensor + MCU & sensor upgrade |
-| [Levoit Mini](./devices/levoit-mini) | Levoit | 🔴 Custom HW | 78 m³/h | 41.8 – 53.6 dBA | Easy | [Guide](./devices/levoit-mini) | [Amazon](https://amzn.to/4acovEh) | Full custom PCB + 3D parts |
-| [Philips AC0650](./devices/philips-600-series) | Philips| 🔵 Add ESP | 170 m³/h | 19–49 dB | Easy | [Guide](./devices/philips-600-series) | [Amazon](https://amzn.to/4vS5Ohs) | ✅ Tested · secure boot → replace module; no AQ sensor |
-| [Philips AC0651](./devices/philips-600-series) | Philips| 🔵 Add ESP | 170 m³/h | 19–49 dB | Easy | [Guide](./devices/philips-600-series) | [Amazon](https://amzn.to/4elkSyg) | ✅ Tested · adds PM2.5 (PM1003) + Auto mode |
-| [IKEA Förnuftig](https://edvoncken.net/2024/04/ikea-fornuftig-with-esphome/) | IKEA | 🔴 Custom HW | 120 m³/h | 28–60 dB | Easy | [Blog ↗](https://edvoncken.net/2024/04/ikea-fornuftig-with-esphome/) · [C6 ↗](https://github.com/horvathgergo/esp32c6-for-fornuftig) | — | 🔗 External · dumb 3-speed fan, ESP added for control |
-| [IKEA Uppåtvind](https://github.com/jonathonlui/esphome-ikea-uppatvind) | IKEA | 🔴 Custom HW | 95 m³/h | 42.5–53.8 dB | Easy | [GitHub ↗](https://github.com/jonathonlui/esphome-ikea-uppatvind) | — | 🔗 External · small desk purifier, ESP added for control |
-| [Levoit Core 300](https://www.reddit.com/r/homeassistant/comments/1rqz9gq/turned_a_broken_dumb_air_purifier_into_a_smart/) | Levoit | 🔴 Custom HW | 214 m³/h | 24–50 dB | Easy | [Reddit ↗](https://www.reddit.com/r/homeassistant/comments/1rqz9gq/turned_a_broken_dumb_air_purifier_into_a_smart/) | — | 🔗 External · **non-smart Core 300** with broken PCB; ESP32 wired straight to the fan-speed lines → 3 interlocked GPIO switches (no MCU/UART, no sensors) |
-| [Xiaomi / Mi Air Purifiers](https://github.com/dhewg/esphome-miot) | Xiaomi | 🟢 Flash | — | — | — | [GitHub ↗](https://github.com/dhewg/esphome-miot) | — | 🔗 External · MIoT UART component; flashes the built-in ESP gateway. Covers Mi Air Purifier 3 / 3H / 3C, Pro H, and Smart 4 / 4 Lite / 4 Pro / Elite |
+Devices that *can't* run ESPHome but are still controllable locally on stock firmware are listed separately in [Cloud-free without ESPHome](#cloud-free-without-esphome--philips--versuni-over-local-coap) below.
+
+| Model | Manufacturer | Support | Methods | CADR (spec) | Noise | Disassembly | Guide | Links | Comments |
+|-------|--------------|---------|---------|-------------|-------|-------------|-------|-------|----------|
+| [Core 200S](./devices/levoit-core200s) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 167 m³/h | 24–48 dB | Easy | [Guide](./devices/levoit-core200s) | [Amazon](https://amzn.to/3SGH513) | ✅ Tested · 3 speeds, no air-quality sensor |
+| [Core 300S](./devices/levoit-core300s) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 214 m³/h | 24–50 dB | Easy | [Guide](./devices/levoit-core300s) | [Amazon](https://amzn.to/4aMVbnO) | ✅ Tested · PM2.5 + Auto mode |
+| [Core 400S](./devices/levoit-core400s) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 442 m³/h | 24–52 dB | Hard | [Guide](./devices/levoit-core400s) | [Amazon](https://amzn.to/4vOT9vt) | ✅ Tested · 4 speeds |
+| [Core 600S](./devices/levoit-core600s) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 641 m³/h | 26–54 dB | Hard | [Guide](./devices/levoit-core600s) | [Amazon](https://amzn.to/4opVx9z) | ✅ Tested · 4 auto modes |
+| [Vital 100S](./devices/levoit-vital100s) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 221 m³/h | 23–52 dB | Easy | [Guide](./devices/levoit-vital100s/README.md#teardown--disassembly) | [Amazon](https://amzn.to/3SaFron) | ✅ Tested · Pet mode; detailed teardown |
+| [Vital 200S (Pro)](./devices/levoit-vital200s) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 415 m³/h | 23–58 dB | Easy | [Guide](./devices/levoit-vital200s) | [Amazon](https://amzn.to/4xMiJn1) | ✅ Tested |
+| [Everest Air](./devices/levoit-everest-air) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) | 🟢 Flash / 🔵 Add ESP | 612 m³/h | 24–56 dB | Easy | [Guide](./devices/levoit-everest-air) | [Amazon](https://amzn.to/3Q1cMB) | ✅ Tested · vent louver, PM1.0/2.5/10, Turbo |
+| [Sprout](./devices/levoit-sprout) | Levoit | 🏠 [`levoit`](./components/levoit/README.md) + [`levoit_audio`](./components/levoit_audio/README.md) | 🟢 Flash / 🔵 Add ESP | 145 m³/h | 22–47 dB | Easy | [Guide](./devices/levoit-sprout) | [Amazon](https://amzn.to/4oAJs1n) | 🚧 WIP · white-noise audio (I2S MP3) |
+| [LV-PUR 131S](./devices/levoit-lv131s/) | Levoit | 🏠 Guide + YAML | 🔴 Custom HW | — | — | Medium | [Guide](./devices/levoit-lv131s/) | — | ESP12F → ESP32-C3, PM1003 → PM5003 |
+| [LV-PUR 131](./devices/levoit-lv131/) | Levoit | 🏠 Guide + YAML | 🔴 Custom HW | — | — | Medium | [Guide](./devices/levoit-lv131/) | — | As above + temperature sensor |
+| [Levoit Mini](./devices/levoit-mini) | Levoit | 🏠 Guide + YAML | 🔴 Custom HW | 78 m³/h | 41.8 – 53.6 dBA | Easy | [Guide](./devices/levoit-mini) | [Amazon](https://amzn.to/4acovEh) | Custom PCB + 3D parts; original PCB bypassed, reversible |
+| [Core 300](https://www.reddit.com/r/homeassistant/comments/1rqz9gq/turned_a_broken_dumb_air_purifier_into_a_smart/) | Levoit | 🔗 External | 🔴 Custom HW | 214 m³/h | 24–50 dB | Easy | [Reddit ↗](https://www.reddit.com/r/homeassistant/comments/1rqz9gq/turned_a_broken_dumb_air_purifier_into_a_smart/) | — | **Non-smart Core 300** with broken PCB; ESP32 wired straight to the fan-speed lines → 3 interlocked GPIO switches (no MCU/UART, no sensors) |
+| [AC0650](./devices/philips-600-series) | Philips / MUJI | 🏠 [`philips`](./components/philips/README.md) | 🔵 Add ESP | 170 m³/h | 19–49 dB | Easy | [Guide](./devices/philips-600-series) | [Amazon](https://amzn.to/4vS5Ohs) | ✅ Tested · secure boot → replace module; no AQ sensor |
+| [AC0651](./devices/philips-600-series) | Philips / MUJI | 🏠 [`philips`](./components/philips/README.md) | 🔵 Add ESP | 170 m³/h | 19–49 dB | Easy | [Guide](./devices/philips-600-series) | [Amazon](https://amzn.to/4elkSyg) | ✅ Tested · adds PM2.5 (PM1003), allergen index, Auto mode |
+| [Förnuftig](https://edvoncken.net/2024/04/ikea-fornuftig-with-esphome/) | IKEA | 🔗 External | 🔴 Custom HW | 120 m³/h | 28–60 dB | Easy | [Blog ↗](https://edvoncken.net/2024/04/ikea-fornuftig-with-esphome/) · [C6 ↗](https://github.com/horvathgergo/esp32c6-for-fornuftig) | — | Dumb 3-speed fan, ESP added for control |
+| [Uppåtvind](https://github.com/jonathonlui/esphome-ikea-uppatvind) | IKEA | 🔗 External | 🔴 Custom HW | 95 m³/h | 42.5–53.8 dB | Easy | [GitHub ↗](https://github.com/jonathonlui/esphome-ikea-uppatvind) | — | Small desk purifier, ESP added for control |
+| [Mi Air Purifier 3 / 3H / 3C · Pro H · Smart 4 / 4 Lite / 4 Pro / Elite](https://github.com/dhewg/esphome-miot) | Xiaomi | 🔗 External | 🟢 Flash | — | — | — | [GitHub ↗](https://github.com/dhewg/esphome-miot) | — | MIoT UART component; flashes the built-in ESP gateway. Also covers other Xiaomi MIoT devices |
+
+**Support** — where the firmware/guide lives:
+- 🏠 **This repo** — maintained here: an in-repo ESPHome component (`levoit`, `philips`) or a full build guide with YAML.
+- 🔗 **External** — someone else's project; the Guide column links straight to it. Listed for completeness, not maintained here.
 
 **Methods** — how the custom firmware ends up on the device:
 - 🟢 **Flash** — flash ESPHome straight onto the device's own ESP32 (works where it isn't locked — most Levoits). Easiest; back up the stock firmware first.
@@ -55,11 +61,113 @@ Every purifier covered here at a glance — how it's converted to ESPHome, its s
 > Two requirements: it has to be an **air purifier**, and it has to run (or be made to run) **ESPHome**. In-repo components or external projects (like the IKEA ones above) are both welcome.
 
 
+## Cloud-free *without* ESPHome — Philips / Versuni over local CoAP
+
+Not every Wi-Fi purifier has an ESP32 behind the antenna. **Philips / Versuni** models use an **MXCHIP** Wi-Fi module — ARM Cortex-M silicon (STM32 / Cypress class) running MiCO OS, not Espressif — which typically shows up on the network as hostname `mxchip…` with MAC prefixes such as `B0:F8:93` (Shanghai MXCHIP Information Technology). ESPHome and Tasmota cannot be flashed onto it by any standard means.
+
+The consolation prize: the stock firmware speaks **encrypted CoAP on UDP port 5683 on your LAN** (software signature `AWS_Philips_AIR@…`), so these devices can be driven entirely locally — no cloud, no app — **without opening the case**. That is not "free" in the sense the rest of this repo is: vendor firmware stays on the device, and Philips can change or lock it down with an OTA update. Hence its own section right below the table above, rather than a row in it.
+
+**Integration:** **[ruaan-deysel/ha-philips-airpurifier](https://github.com/ruaan-deysel/ha-philips-airpurifier)** — HACS custom component, auto-discovery via MAC/hostname plus manual IP. A maintained continuation of [kongo09/philips-airpurifier-coap](https://github.com/kongo09/philips-airpurifier-coap), built on [@rgerganov's reverse engineering](https://xakcop.com/post/ctrl-air-purifier/). Requires Home Assistant 2026.4.0+.
+
+> ⚠️ **Caveats, straight from that project:**
+> - The connection can work initially and go unresponsive over time — power-cycle the purifier and/or restart HA. Auto-reconnect exists but doesn't always succeed. This is a device-firmware limitation, not an integration bug.
+> - **Some newer firmware versions disable local CoAP entirely.** If you're buying a device specifically for this, make sure you can return it.
+> - Philips' newer cloud API (Google Home / Alexa) is not available for local integrations.
+
+### Supported models
+
+Extracted from the integration's `FanModel` enum and `device_models.py` — **63 firmware entries / 57 distinct model codes**. The five AC0850 combo variants appear twice because they ship two different firmware personalities (`AWS_Philips_AIR` vs `AWS_Philips_AIR_Combo`).
+
+**Air purifiers** — 47 model codes across 22 series:
+
+| Series | Variants | Class |
+|--------|----------|-------|
+| AC0650 | AC0650/10 | Compact |
+| AC0850 | /11, /20, /31, /41, /70, /81, /85 | Compact |
+| AC0950 | AC0950, AC0951 | Compact |
+| AC1214 | AC1214 | Compact |
+| AC1715 | AC1715 | Compact |
+| AC2210 | AC2210, AC2221 | Mid-range |
+| AC2729 | AC2729 | Mid-range |
+| AC2889 | AC2889 | Mid-range |
+| AC2936 | AC2936, AC2939, AC2958, AC2959 | Mid-range |
+| AC3033 | AC3033, AC3036, AC3039 | Advanced |
+| AC3055 | AC3055, AC3059 | Advanced |
+| AC3210 | AC3210, AC3220, AC3221 | Advanced |
+| AC3259 | AC3259 | Advanced |
+| AC3420 | AC3420, AC3421 | Advanced |
+| AC3737 | AC3737 | Advanced |
+| AC3829 | AC3829, AC3836 | Advanced |
+| AC3854 | AC3854/50, AC3854/51 | Advanced |
+| AC3858 | AC3858/50, AC3858/51, AC3858/83, AC3858/86 | Advanced |
+| AC4220 | AC4220, AC4221, AC4236 | Premium |
+| AC4550 | AC4550, AC4558 | Premium |
+| AC5659 | AC5659, AC5660 | Premium |
+
+**2-in-1 purifier + humidifier combos:**
+
+| Series | Variants | Notes |
+|--------|----------|-------|
+| AC0850 Combo | /11C, /20C, /31C, /41C, /70C | Same hardware as above, `AWS_Philips_AIR_Combo` firmware |
+| AMF765 | AMF765 | Oscillation via angle number entity + `fan.oscillate` |
+| AMF870 | AMF870 | As above |
+
+**Humidifiers & fans:**
+
+| Model | Type |
+|-------|------|
+| CX3120, CX3550 | Compact humidifier |
+| CX5120 | Advanced humidifier |
+| HU1509, HU1510 | Compact humidifier |
+| HU4209/00 | Humidifier (in code, not yet in the upstream README table) |
+| HU5710 | Premium humidifier |
+| CX7550/01 | Oscillating fan — needs the Philips Air app once for Wi-Fi onboarding, then fully local |
+
+`AC2210` / `AC2221` and `HU4209/00` are present in the integration's code but missing from its own README tables — treat them as supported-but-undocumented.
+
+### 🔗 Overlap with this repo
+
+**AC0650** shows up on both sides: the CoAP integration talks to its stock MXCHIP module, while [our Philips / MUJI 600-series component](./components/philips/README.md) replaces that module with an ESP32 and speaks the internal `FE FF` UART protocol instead. If you want an air-quality sensor on an AC0650, the ESP route is the one that gets you there — the stock unit has no AQ sensor at all.
+
+### 🔬 Open question — can the MXCHIP models be ESP32-ified anyway?
+
+**Unverified — no teardown done yet.** The premise of every conversion in this repo is that the Wi-Fi module and the purifier's own MCU are separate chips talking over UART. If that also holds for the MXCHIP-based Philips models, the same 🔵 *Add ESP* trick should apply: hold the MXCHIP in reset, wire an ESP32 to the same UART pads, and reimplement the protocol.
+
+What would need checking on an actual board (an **AC3059** is the candidate to start with):
+
+1. Is the Wi-Fi module a separate daughterboard / castellated module with an identifiable UART pair to the main MCU, or is the MXCHIP itself running the whole purifier?
+2. Is there a usable reset / enable pin to hold the MXCHIP off cleanly (the ESPHome equivalent of `EN`→GND), so the mod stays reversible?
+3. Logic-analyzer capture of both UART directions during app interaction, to see whether it's a Levoit/Philips-style framed binary protocol.
+
+If you have one of these open on the bench, a UART dump in [Discussions](https://github.com/tuct/esphome-projects/discussions) would be very welcome — see [Capturing a UART Dump](#capturing-a-uart-dump) below.
+
 ## Change Log 
+
+### 2026.09.07
+
+* Levoit component **1.4.1** — `fan_operating_mode` select, coherent fan mode commands, Core room size round-trip fix, fan-speed fix when leaving a preset, and `auto_profile_room_size_input` (details in the [component change log](#change-log---levoit-component))
+* Added "Cloud-free without ESPHome" section — Philips / Versuni MXCHIP models controllable locally over CoAP
+* Overview table reworked: new **Support** column separating in-repo components from external projects, rows grouped by manufacturer
+* Removed the `clock_clock` and `lvgl_clock` components — split out into their own repo
+
+### 2026.08.29
+
+* Added MIT License
+
+### 2026.08.13
+
+* Fixed fan speed not being sent when leaving a preset at an unchanged level (@Bleialf, #53)
+
+### 2026.07.20
+
+* LV-PUR 131: added PMS5003 and DHT22 support (@X3NOOO, #52)
+* Added `fan_operating_mode` select for dashboards that don't render fan presets (@EdenNelson, #50)
 
 ### 2026.07.04
 
-* Added Levoit LV-PUR 131 support
+* Added Levoit LV-PUR 131 support (@X3NOOO, #51)
+* Fixed Core room size round trip (@EdenNelson, #46)
+* Made Manual/Auto fan mode commands coherent (@EdenNelson, #48)
 
 ### 2026.06.20 
 
@@ -257,9 +365,14 @@ Auto mode options per model:
 
 ### Change Log - Levoit Component
 
-#### ESP Version: 1.5.0 - unreleased
+#### ESP Version: 1.4.1 - 2026.09.07
 
-* Add `auto_profile_room_size_input` number: persisted Room Size target for Room Size/Efficient auto profile (@EdenNelson)
+* Add `fan_operating_mode` select: the active fan mode as a normal ESPHome select, for dashboards that don't render fan presets (@EdenNelson, #50)
+  * Stays in sync with MCU fan-mode status and with changes made through the fan entity
+* Make fan mode commands coherent between the Manual and Auto paths (@EdenNelson, #48)
+* Fix Core room size round trip — value written and value read back now match (@EdenNelson, #46)
+* Fix: setting the same fan level while Sleep/Auto was active sent no UART command, so the device stayed in the preset. A speed call that leaves a non-Manual preset now counts as a change (@Bleialf, #53)
+* Add `auto_profile_room_size_input` number: persisted Room Size target for Room Size/Efficient auto profile (@EdenNelson, #56)
   * Automatically sent to the MCU when Room Size/Efficient is selected — no manual "Apply" step needed
   * Survives Default/Quiet status resets that report room size as `0`
   * Restores saved target on reboot, clamped to model-specific min/max
