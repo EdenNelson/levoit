@@ -119,7 +119,7 @@ namespace esphome
         if (model == ModelType::CORE300S || model == ModelType::CORE400S)
         {
           // Core300S/400S status: ptype 0x30 0x40 or 0xB0 0x40
-          if (msg_type == 0x22 && (ptype0 == 0x30 && ptype1 == 0x40 || ptype0 == 0xB0 && ptype1 == 0x40))
+          if (msg_type == 0x22 && ((ptype0 == 0x30 && ptype1 == 0x40) || (ptype0 == 0xB0 && ptype1 == 0x40)))
           {
             decode_core_status(self, model, payload, payload_len);
           }

@@ -174,7 +174,7 @@ namespace esphome
                 const char *opt = fan_operating_mode_to_option_(value);
                 if (opt == nullptr)
                 {
-                    ESP_LOGW(TAG, "publish_select: invalid fan mode %u", value);
+                    ESP_LOGW(TAG, "publish_select: invalid fan mode %u", (unsigned)value);
                     return;
                 }
                 if (std::find(options.begin(), options.end(), opt) == options.end())
@@ -190,7 +190,7 @@ namespace esphome
             if (value >= options.size())
             {
                 ESP_LOGW(TAG, "publish_select: invalid index %u for type %d (options=%u)",
-                         value, (int)type, (unsigned)options.size());
+                         (unsigned)value, (int)type, (unsigned)options.size());
                 return;
             }
             const std::string &opt = options[value];
@@ -664,13 +664,13 @@ namespace esphome
             
             // Restore saved values or initialize to 0
             if (pref_used_cadr_.load(&used_cadr_)) {
-                ESP_LOGI(TAG, "Restored used_cadr: %u m³", used_cadr_);
+                ESP_LOGI(TAG, "Restored used_cadr: %u m³", (unsigned)used_cadr_);
             } else {
                 used_cadr_ = 0;
                 ESP_LOGI(TAG, "Initialized used_cadr to 0");
             }
             if (pref_total_runtime_.load(&total_runtime_)) {
-                ESP_LOGI(TAG, "Restored total_runtime: %u hours", total_runtime_);
+                ESP_LOGI(TAG, "Restored total_runtime: %u hours", (unsigned)total_runtime_);
             } else {
                 total_runtime_ = 0;
                 ESP_LOGI(TAG, "Initialized total_runtime to 0");
