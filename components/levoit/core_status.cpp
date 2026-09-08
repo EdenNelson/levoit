@@ -34,7 +34,7 @@ namespace esphome
       uint16_t initial_min = initial_sec / 60;
 
       ESP_LOGV(TAG_CORE, "Timer: remaining=%u sec (%u min), initial=%u sec (%u min)", 
-               remaining_sec, remaining_min, initial_sec, initial_min);
+               (unsigned)remaining_sec, remaining_min, (unsigned)initial_sec, initial_min);
 
       self->publish_number(NumberType::TIMER, initial_min);
       self->publish_text_sensor(TextSensorType::TIMER_DURATION_INITIAL, format_duration_minutes(initial_min));

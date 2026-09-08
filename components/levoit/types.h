@@ -228,7 +228,7 @@ namespace esphome
             // dedicated command for setSleepModeCustom
         } CommandType;
 
-        static const char *command_type_to_string(CommandType cmd)
+        inline const char *command_type_to_string(CommandType cmd)
         {
             static const char *const names[] = {
                 "ack",
